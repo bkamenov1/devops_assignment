@@ -51,6 +51,26 @@ terraform apply
 ```
 5. Build and Push Docker Image
 
+ Authenticate Docker to AWS ECR:  
+```bash
+aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin <aws_account_id>.dkr.ecr.eu-north-1.amazonaws.com
+```
+
+ Build the Docker image:  
+```bash
+docker build -t <ecr_repo_name>:v1 .
+```
+
+ Tag the image for ECR:  
+```bash
+docker tag <ecr_repo_name>:v1 <aws_account_id>.dkr.ecr.eu-north-1.amazonaws.com/<ecr_repo_name>:v1
+```
+
+ Push the image to ECR:  
+```bash
+docker push <aws_account_id>.dkr.ecr.eu-north-1.amazonaws.com/<ecr_repo_name>:v1
+```
+
 6. **Update kubeconfig** to connect `kubectl` to the new EKS cluster:
 ```bash
 aws eks update-kubeconfig --name my-cluster --region eu-north-1
