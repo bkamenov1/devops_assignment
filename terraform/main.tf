@@ -1,4 +1,4 @@
-module "vpc" {
+module "vpc" { #Azure: VNET
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.1.2"
 
@@ -13,7 +13,7 @@ module "vpc" {
   map_public_ip_on_launch = true
 }
 
-module "eks" {
+module "eks" { #Azure: AKS
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 18.0"
 
@@ -42,7 +42,7 @@ module "eks" {
   }
 }
 
-resource "aws_ecr_repository" "app" {
+resource "aws_ecr_repository" "app" { #Azure: ACR
   name         = "devops-app"
   force_delete = true
 }

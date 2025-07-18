@@ -12,23 +12,25 @@ This project demonstrates how to deploy a containerized Python application with 
 
 ## 📌 Project Structure
 
+```text
 devops-challenge/
-├── terraform/ # Terraform infrastructure code
-│ ├── main.tf
-│ ├── variables.tf
-│ ├── outputs.tf
-│ └── provider.tf
-├── k8s/ # Kubernetes manifests
-│ ├── postgres-deployment.yaml
-│ ├── app-deployment.yaml
-│ └── secrets.yaml
-├── app/ # Application code
-│ ├── Dockerfile
-│ ├── requirements.txt
-│ └── app.py
-├── scripts/ # Helper scripts
-│ └── build_push.sh
-└── README.md
+├── terraform/                    # Terraform infrastructure code
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── outputs.tf
+│   └── provider.tf
+├── k8s/                          # Kubernetes manifests
+│   ├── postgres-deployment.yaml
+│   ├── app-deployment.yaml
+│   └── secrets.yaml
+├── app/                          # Application code
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── app.py
+├── scripts/                      # Helper scripts
+│   └── build_push.sh
+└── README.md                     # Documentation
+```
 
 ## What is provisioned
 
@@ -64,19 +66,17 @@ Despite correct setup of infrastructure and EKS:
 - IAM policies for EKS and nodes were correctly attached
 - Docker image built successfully and pulled by K8s nodes
 
-## 🧠 Lessons Learned
+##  Lessons Learned
 
 - EKS setup requires **precise IAM**, especially for CSI drivers
 - Compared to Azure (which I’m more familiar with), AWS permissions and service account linking are more error-prone and time-consuming
 - Realized the importance of **automated validation steps** and **cloud-native troubleshooting tools** (e.g  `kubectl describe`,)
 
 
-## 🔚 Summary
+##  Summary
 
 This project demonstrates the ability to:
 
 - Work with Terraform to provision cloud infrastructure
 - Build and deploy containerized apps
 - Debug complex cloud-native issues 
-
-Although the final deployment had pending issues, the infrastructure layer is solid.
