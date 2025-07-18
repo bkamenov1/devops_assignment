@@ -54,10 +54,11 @@ terraform apply
 docker build
 docker tag 
 docker push 
-
-7. **Update kubeconfig** to connect `kubectl` to the new EKS cluster:
+```
+6. **Update kubeconfig** to connect `kubectl` to the new EKS cluster:
 ```bash
 aws eks update-kubeconfig --name my-cluster --region eu-north-1
+
 ```
 
 7. **Deploy PostgreSQL with PVC** using your manifest:
