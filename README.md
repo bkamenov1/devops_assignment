@@ -31,6 +31,63 @@ devops-challenge/
 │   └── build_push.sh
 └── README.md                     # Documentation
 ```
+# Deployment Steps
+
+1. **Clone the repository** with the project code and infrastructure files.
+
+2. **Configure AWS CLI** with your credentials:
+```bash
+aws configure
+```
+
+3. **Initialize Terraform** inside the `terraform/` folder:
+```bash
+terraform init
+```
+
+4. **Apply Terraform plan** to create infrastructure (VPC, EKS cluster, node groups, IAM roles, OIDC provider):
+```bash
+terraform apply
+```
+
+5. **Update kubeconfig** to connect `kubectl` to the new EKS cluster:
+```bash
+aws eks update-kubeconfig --name my-cluster --region eu-north-1
+```
+
+6. **Deploy the EBS CSI driver** manifests with properly annotated service accounts:
+```bash
+kubectl apply -f k8s/ebs-csi-driver.yaml
+```
+
+7. **Deploy the StorageClass** for AWS EBS:
+```bash
+kubectl apply -f k8s/storageclass.yaml
+```
+
+8. **Deploy PostgreSQL with PVC** using your manifest:
+```bash
+kubectl apply -f k8s/postgres-deployment.yaml
+```
+
+9. **Deploy your application pods** (if separate from PostgreSQL):
+```bash
+kubectl apply -f k8s/app-deployment.yaml
+```
+
+10. **Verify all pods are running and PVCs are bound:**
+```bash
+kubectl get pods
+kubectl get pvc
+```
+
+11. **Troubleshoot if needed:** check pod events and logs:
+```bash
+kubectl describe pod <pod-name>
+kubectl logs <pod-name>
+```
+Restart CSI driver pods if volume provisioning fails or pods stay pending.
+
 
 ## What is provisioned
 
@@ -63,23 +120,23 @@ Despite correct setup of infrastructure and EKS:
 
  ## Troubleshooting PVC and Pending Pods
 
- - Faced issues with PVCs stuck in Pending and pods not starting due to volume problems. To resolve this, we:
+ - Faced issues with PVCs stuck in Pending and pods not starting due to volume problems. To resolve this:
 
-- Verified PVCs were properly bound to PersistentVolumes (PVs).
-
-- Ensured the StorageClass used the correct AWS EBS CSI driver provisioner.
-
-- Annotated the EBS CSI driver service account with the correct IAM role for AWS permissions.
-
-- Created and verified the IAM OIDC provider to enable secure role assumption.
-
-- Checked pod events (kubectl describe pod) for volume errors.
-
-- Confirmed cluster nodes were Ready and had enough capacity.
-
-- Validated PVC and PV access modes and sizes matched.
-
-- Restarted CSI driver pods to fix any provisioning timeouts or issues.
+  - Verified PVCs were properly bound to PersistentVolumes (PVs).
+  
+  - Ensured the StorageClass used the correct AWS EBS CSI driver provisioner.
+  
+  - Annotated the EBS CSI driver service account with the correct IAM role for AWS permissions.
+  
+  - Created and verified the IAM OIDC provider to enable secure role assumption.
+  
+  - Checked pod events (kubectl describe pod) for volume errors.
+  
+  - Confirmed cluster nodes were Ready and had enough capacity.
+  
+  - Validated PVC and PV access modes and sizes matched.
+  
+  - Restarted CSI driver pods to fix any provisioning timeouts or issues.
 
 ##  Lessons Learned
 
