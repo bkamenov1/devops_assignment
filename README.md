@@ -61,7 +61,7 @@ Despite correct setup of infrastructure and EKS:
   - PVCs can't provision volumes
   - Pods are crashing, possibly due to startup errors or missing environment dependencies
 
-- **Troubleshooting PVC and Pending Pods**
+- ## Troubleshooting PVC and Pending Pods**
 
  - Faced issues with PVCs stuck in Pending and pods not starting due to volume problems. To resolve this, we:
 
