@@ -49,13 +49,13 @@ devops-challenge/
 
 Despite correct setup of infrastructure and EKS:
 
-- ❗️**Pods remain in `Pending` or `CrashLoopBackOff`** status:
+- **Pods remain in `Pending` or `CrashLoopBackOff`** status:
   - PostgreSQL: Fails to bind PersistentVolumeClaim
   - App: Crashes with no logs returned
-- ❗️**EBS CSI driver cannot create volumes** due to missing or misconfigured IAM/OIDC integration
+- **EBS CSI driver cannot create volumes** due to missing or misconfigured IAM/OIDC integration
   - Error: `No OpenIDConnect provider found in your account`
   - Attempts to set up IAM OIDC provider ran into AWS CLI or permission issues
-- ❗️**Manual investigation** confirmed:
+- **Manual investigation** confirmed:
   - PVCs can't provision volumes
   - Pods are crashing, possibly due to startup errors or missing environment dependencies
 
