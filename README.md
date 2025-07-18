@@ -38,7 +38,9 @@ devops-challenge/
   - VPC, subnets, IAM roles
   - EKS Cluster and managed node groups
   - ECR repository for Docker images
-- **Docker image is built and pushed to ECR**
+
+- **Docker image built, pushed to ECR and pulled by K8s nodes**
+
 - **Kubernetes manifests are applied**:
   - PostgreSQL StatefulSet with PVC
   - Application Deployment using the custom Docker image
@@ -59,18 +61,34 @@ Despite correct setup of infrastructure and EKS:
   - PVCs can't provision volumes
   - Pods are crashing, possibly due to startup errors or missing environment dependencies
 
-## Attempts at Fixing
+- **Troubleshooting PVC and Pending Pods**
 
-- Annotated service accounts with correct IAM role for EBS CSI driver
-- Verified OIDC URL and attempted to create a provider using AWS CLI
-- IAM policies for EKS and nodes were correctly attached
-- Docker image built successfully and pulled by K8s nodes
+ - Faced issues with PVCs stuck in Pending and pods not starting due to volume problems. To resolve this, we:
+
+- Verified PVCs were properly bound to PersistentVolumes (PVs).
+
+- Ensured the StorageClass used the correct AWS EBS CSI driver provisioner.
+
+- Annotated the EBS CSI driver service account with the correct IAM role for AWS permissions.
+
+- Created and verified the IAM OIDC provider to enable secure role assumption.
+
+- Checked pod events (kubectl describe pod) for volume errors.
+
+- Confirmed cluster nodes were Ready and had enough capacity.
+
+- Validated PVC and PV access modes and sizes matched.
+
+- Restarted CSI driver pods to fix any provisioning timeouts or issues.
 
 ##  Lessons Learned
 
 - EKS setup requires **precise IAM**, especially for CSI drivers
 - Compared to Azure (which I’m more familiar with), AWS permissions and service account linking are more error-prone and time-consuming
 - Realized the importance of **automated validation steps** and **cloud-native troubleshooting tools** (e.g  `kubectl describe`,)
+- StorageClass configuration and compatibility between PVCs and PVs can cause subtle provisioning issues
+- Restarting controller pods (like CSI drivers) can resolve transient AWS API or provisioning failures
+
 
 
 ##  Summary
