@@ -50,9 +50,9 @@ terraform init
 terraform apply
 ```
 5. Build and Push Docker Image:
-docker build
+```docker build
 docker tag
-docker push
+docker push``` 
 
 7. **Update kubeconfig** to connect `kubectl` to the new EKS cluster:
 ```bash
