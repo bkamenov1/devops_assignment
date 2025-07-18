@@ -55,33 +55,24 @@ terraform apply
 aws eks update-kubeconfig --name my-cluster --region eu-north-1
 ```
 
-6. **Deploy the EBS CSI driver** manifests with properly annotated service accounts:
-```bash
-kubectl apply -f k8s/ebs-csi-driver.yaml
-```
 
-7. **Deploy the StorageClass** for AWS EBS:
-```bash
-kubectl apply -f k8s/storageclass.yaml
-```
-
-8. **Deploy PostgreSQL with PVC** using your manifest:
+6. **Deploy PostgreSQL with PVC** using your manifest:
 ```bash
 kubectl apply -f k8s/postgres-deployment.yaml
 ```
 
-9. **Deploy your application pods** (if separate from PostgreSQL):
+7. **Deploy your application pods**:
 ```bash
 kubectl apply -f k8s/app-deployment.yaml
 ```
 
-10. **Verify all pods are running and PVCs are bound:**
+8. **Verify all pods are running and PVCs are bound:**
 ```bash
 kubectl get pods
 kubectl get pvc
 ```
 
-11. **Troubleshoot if needed:** check pod events and logs:
+9. **Troubleshoot if needed:** check pod events and logs:
 ```bash
 kubectl describe pod <pod-name>
 kubectl logs <pod-name>
