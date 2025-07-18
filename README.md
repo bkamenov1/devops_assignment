@@ -49,30 +49,31 @@ terraform init
 ```bash
 terraform apply
 ```
+5. Build and Push Docker Image
 
-5. **Update kubeconfig** to connect `kubectl` to the new EKS cluster:
+6. **Update kubeconfig** to connect `kubectl` to the new EKS cluster:
 ```bash
 aws eks update-kubeconfig --name my-cluster --region eu-north-1
 ```
 
 
-6. **Deploy PostgreSQL with PVC** using your manifest:
+7. **Deploy PostgreSQL with PVC** using your manifest:
 ```bash
 kubectl apply -f k8s/postgres-deployment.yaml
 ```
 
-7. **Deploy your application pods**:
+8. **Deploy your application pods**:
 ```bash
 kubectl apply -f k8s/app-deployment.yaml
 ```
 
-8. **Verify all pods are running and PVCs are bound:**
+9. **Verify all pods are running and PVCs are bound:**
 ```bash
 kubectl get pods
 kubectl get pvc
 ```
 
-9. **Troubleshoot if needed:** check pod events and logs:
+10. **Troubleshoot if needed:** check pod events and logs:
 ```bash
 kubectl describe pod <pod-name>
 kubectl logs <pod-name>
